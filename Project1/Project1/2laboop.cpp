@@ -10,7 +10,7 @@ class STUDENT {
 private:
     string surname;
     int recordBookNumber;
-    int marks[MAX_MARKS];
+    int* marks; 
     int marksCount;
 
 public:
@@ -18,15 +18,18 @@ public:
         surname = "";
         recordBookNumber = 0;
         marksCount = 0;
+        marks = new int[MAX_MARKS];
     }
 
     STUDENT(string s, int n) {
         surname = s;
         recordBookNumber = n;
         marksCount = 0;
+        marks = new int[MAX_MARKS];
     }
 
     ~STUDENT() {
+        delete[] marks;
     }
 
     void setData(string s, int n) {
@@ -63,7 +66,7 @@ public:
 
 class GROUP {
 private:
-    STUDENT students[MAX_STUDENTS];
+    STUDENT* students[MAX_STUDENTS];
     int studentsCount;
 
 public:
@@ -72,6 +75,9 @@ public:
     }
 
     ~GROUP() {
+        for (int i = 0; i < studentsCount; i++) {
+            delete students[i];
+        }
     }
 
     void inputData() {
@@ -85,12 +91,14 @@ public:
             string s;
             int n, k;
 
+            students[i] = new STUDENT();
+
             cout << "\nStudent " << i + 1 << endl;
             cout << "Surname: ";
             cin >> s;
             cout << "Record book number: ";
             cin >> n;
-            students[i].setData(s, n);
+            students[i]->setData(s, n);
 
             cout << "How many marks (max " << MAX_MARKS << "): ";
             cin >> k;
@@ -98,7 +106,7 @@ public:
                 int m;
                 cout << "Mark " << j + 1 << ": ";
                 cin >> m;
-                students[i].addMark(m);
+                students[i]->addMark(m);
             }
         }
     }
@@ -106,8 +114,8 @@ public:
     void printAverages() {
         cout << "\nAverage mark of each student:" << endl;
         for (int i = 0; i < studentsCount; i++) {
-            cout << students[i].getSurname() << " (record book " << students[i].getRecordBookNumber()
-                << ") - " << students[i].averageMark() << endl;
+            cout << students[i]->getSurname() << " (record book " << students[i]->getRecordBookNumber()
+                << ") - " << students[i]->averageMark() << endl;
         }
     }
 
@@ -121,7 +129,7 @@ public:
         // bublle 
         for (int i = 0; i < studentsCount - 1; i++) {
             for (int j = 0; j < studentsCount - 1 - i; j++) {
-                if (students[index[j]].averageMark() < students[index[j + 1]].averageMark()) {
+                if (students[index[j]]->averageMark() < students[index[j + 1]]->averageMark()) {
                     int temp = index[j];
                     index[j] = index[j + 1];
                     index[j + 1] = temp;
@@ -136,8 +144,8 @@ public:
 
         cout << "\nTop students with the highest average mark:" << endl;
         for (int i = 0; i < count; i++) {
-            cout << i + 1 << ". " << students[index[i]].getSurname()
-                << " - " << students[index[i]].averageMark() << endl;
+            cout << i + 1 << ". " << students[index[i]]->getSurname()
+                << " - " << students[index[i]]->averageMark() << endl;
         }
     }
 };
