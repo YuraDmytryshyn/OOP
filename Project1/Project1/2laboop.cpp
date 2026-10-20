@@ -5,12 +5,72 @@ using namespace std;
 
 const int MAX_MARKS = 10;
 const int MAX_STUDENTS = 30;
+const int MIN_MARK = 1;
+const int MAX_MARK = 10;
+
+int inputInt(string text, int minValue, int maxValue) {
+    string s;
+    while (true) {
+        cout << text;
+        cin >> s;
+        cin.ignore(1000, '\n');
+
+        bool onlyDigits = true;
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] < '0' || s[i] > '9') {
+                onlyDigits = false;
+            }
+        }
+
+        if (!onlyDigits) {
+            cout << "Error! Enter a number (digits only)." << endl;
+        }
+        else if (s.length() > 1 && s[0] == '0') {
+            cout << "Error! Number cannot start with zero." << endl;
+        }
+        else if (s.length() > 9) {
+            cout << "Error! Number is too big." << endl;
+        }
+        else {
+            int x = stoi(s);
+            if (x < minValue || x > maxValue) {
+                cout << "Error! Number must be from " << minValue << " to " << maxValue << "." << endl;
+            }
+            else {
+                return x;
+            }
+        }
+    }
+}
+
+string inputSurname(string text) {
+    string s;
+    while (true) {
+        cout << text;
+        cin >> s;
+        cin.ignore(1000, '\n');
+
+        bool hasDigit = false;
+        for (int i = 0; i < s.length(); i++) {
+            if (s[i] >= '0' && s[i] <= '9') {
+                hasDigit = true;
+            }
+        }
+
+        if (hasDigit) {
+            cout << "Error! Surname cannot contain digits." << endl;
+        }
+        else {
+            return s;
+        }
+    }
+}
 
 class STUDENT {
 private:
     string surname;
     int recordBookNumber;
-    int* marks; 
+    int* marks;
     int marksCount;
 
 public:
@@ -81,11 +141,7 @@ public:
     }
 
     void inputData() {
-        cout << "How many students in the group (max " << MAX_STUDENTS << "): ";
-        cin >> studentsCount;
-        if (studentsCount > MAX_STUDENTS) {
-            studentsCount = MAX_STUDENTS;
-        }
+        studentsCount = inputInt("How many students in the group (max " + to_string(MAX_STUDENTS) + "): ", 1, MAX_STUDENTS);
 
         for (int i = 0; i < studentsCount; i++) {
             string s;
@@ -94,18 +150,15 @@ public:
             students[i] = new STUDENT();
 
             cout << "\nStudent " << i + 1 << endl;
-            cout << "Surname: ";
-            cin >> s;
-            cout << "Record book number: ";
-            cin >> n;
+
+            s = inputSurname("Surname: ");
+
+            n = inputInt("Record book number: ", 1, 999999999);
             students[i]->setData(s, n);
 
-            cout << "How many marks (max " << MAX_MARKS << "): ";
-            cin >> k;
+            k = inputInt("How many marks (max " + to_string(MAX_MARKS) + "): ", 1, MAX_MARKS);
             for (int j = 0; j < k; j++) {
-                int m;
-                cout << "Mark " << j + 1 << ": ";
-                cin >> m;
+                int m = inputInt("Mark " + to_string(j + 1) + ": ", MIN_MARK, MAX_MARK);
                 students[i]->addMark(m);
             }
         }
