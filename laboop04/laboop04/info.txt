@@ -1,0 +1,26 @@
+=== Person ===
+Name: Ivan Petrenko
+Age: 45
+
+=== Student ===
+Name: Oleh Kovalenko
+Age: 18
+Group: KN 11-1
+Course: 1
+
+=== Diplomnik ===
+Name: dsad
+Age: 2
+Group: kr-11
+Course: 2
+Thesis theme: 12313dsadas
+Supervisor: dasddsa
+
+=== Diplomnik copy ===
+Name: dsad
+Age: 2
+Group: kr-11
+Course: 2
+Thesis theme: 12313dsadas
+Supervisor: dasddsa
+
